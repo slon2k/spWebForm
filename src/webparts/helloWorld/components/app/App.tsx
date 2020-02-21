@@ -2,6 +2,10 @@ import * as React from "react";
 import { IAppProps } from "./IAppProps";
 import styles from "./App.module.scss";
 import { SPHttpClient } from "@microsoft/sp-http";
+import { sp } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/items";
 
 const App: React.FC<IAppProps> = ({ spHttpClient, currentSiteUrl }) => {
   const [items, setItems] = React.useState([]);
@@ -17,6 +21,12 @@ const App: React.FC<IAppProps> = ({ spHttpClient, currentSiteUrl }) => {
       .then(() => setLoadingItems(false))
       .catch(e => console.error(e));
   }, []);
+
+  const fetchItems = async () => {
+    const list = sp.web.lists.getByTitle("Helpdesk");
+    const r = await list.items.getAll();
+    console.log(r);
+  };
 
   if (loadingItems) {
     return <div>Loading ...</div>;
@@ -35,6 +45,7 @@ const App: React.FC<IAppProps> = ({ spHttpClient, currentSiteUrl }) => {
           ))}
         </ul>
       </div>
+      <button onClick={fetchItems}>fetch</button>
     </div>
   );
 };

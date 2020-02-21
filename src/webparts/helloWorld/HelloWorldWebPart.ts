@@ -10,9 +10,10 @@ import { BaseClientSideWebPart } from "@microsoft/sp-webpart-base";
 
 import * as strings from "HelloWorldWebPartStrings";
 import HelloWorld from "./components/HelloWorld";
-import App from "./components/app/App"
+import App from "./components/app/App";
 import { IHelloWorldProps } from "./components/IHelloWorldProps";
 import { IAppProps } from "./components/app/IAppProps";
+import { sp } from "@pnp/sp";
 
 export interface IHelloWorldWebPartProps {
   description: string;
@@ -22,14 +23,18 @@ export interface IHelloWorldWebPartProps {
 export default class HelloWorldWebPart extends BaseClientSideWebPart<
   IHelloWorldWebPartProps
 > {
+  public async onInit(): Promise<void> {
+    await super.onInit();
+    sp.setup({
+      spfxContext: this.context
+    });
+  }
+
   public render(): void {
-    const element: React.ReactElement<IAppProps> = React.createElement(
-      App,
-      {
-        spHttpClient: this.context.spHttpClient,
-        currentSiteUrl: this.context.pageContext.web.absoluteUrl
-      }
-    );
+    const element: React.ReactElement<IAppProps> = React.createElement(App, {
+      spHttpClient: this.context.spHttpClient,
+      currentSiteUrl: this.context.pageContext.web.absoluteUrl
+    });
 
     ReactDom.render(element, this.domElement);
   }
