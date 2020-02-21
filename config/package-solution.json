@@ -1,0 +1,13 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "first-web-part-client-side-solution",
+    "id": "e25c3b4c-d0c4-4f49-b892-b59e6f8b8e16",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "isDomainIsolated": false
+  },
+  "paths": {
+    "zippedPackage": "solution/first-web-part.sppkg"
+  }
+}
