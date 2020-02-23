@@ -1,5 +1,5 @@
 import * as React from "react";
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import { HashRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import { IAppProps } from "./IAppProps";
 import styles from "./App.module.scss";
 import HomePage from "./../../pages/HomePage"
@@ -72,7 +72,7 @@ const App: React.FC<IAppProps> = ({ spHttpClient, currentSiteUrl }) => {
           </div>
           <Switch>
             <Route path="/form"><FormPage /></Route>
-            <Route path="/" exact ><HomePage/></Route>
+            <Route path="/" exact ><HomePage /></Route>
           </Switch>
           <p>{currentSiteUrl}</p>
           <ul>
