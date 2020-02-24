@@ -1,16 +1,15 @@
 import * as React from "react";
-import { HashRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import { HashRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { IAppProps } from "./IAppProps";
 import styles from "./App.module.scss";
-import HomePage from "./../../pages/HomePage"
+import HomePage from "./../../pages/HomePage";
 import FormPage from "./../../pages/FormPage";
 import { SPHttpClient } from "@microsoft/sp-http";
 import { sp } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
-import '@pnp/sp/site-users';
-
+import "@pnp/sp/site-users";
 
 const App: React.FC<IAppProps> = ({ spHttpClient, currentSiteUrl }) => {
   const [items, setItems] = React.useState([]);
@@ -19,40 +18,55 @@ const App: React.FC<IAppProps> = ({ spHttpClient, currentSiteUrl }) => {
 
   React.useEffect(() => {
     setLoadingItems(true);
+    fetchItems()
+      .then(items => setItems(items))
+      .then(() => setLoadingItems(false))
+      .catch(e => console.error(e));
+  }, []);
+
+  const httpClientGetItems = () => {
     spHttpClient
       .get(endpoint, SPHttpClient.configurations.v1)
       .then(res => res.json())
       .then(res => setItems(res.value))
       .then(() => setLoadingItems(false))
       .catch(e => console.error(e));
-  }, []);
+  };
 
   const fetchItems = async () => {
     const list = sp.web.lists.getByTitle("Helpdesk");
-    const r = await list.items.select("Id", "Title", "Author/Id", "Author/Title").expand("Author/Id").getAll();
-    console.log(r);
+    const r = await list.items
+      .select("Id", "Title", "Comments", "Status", "AuthorId")
+      .getAll();
+    return r;
   };
 
   const fetchItem = async () => {
     const list = sp.web.lists.getByTitle("Helpdesk");
-    const r = await list.items.getById(2).select('Comments', 'Status', 'Editor/Id', 'Versions').expand('Versions').get();
+    const r = await list.items
+      .getById(2)
+      .select("Comments", "Status", "Editor/Id", "Versions")
+      .expand("Versions")
+      .get();
     console.log(r);
   };
 
   const fetchUser = async () => {
     const user = await sp.web.currentUser.get();
     console.log(user);
-  }
+  };
 
   const fetchList = async () => {
     const list = await sp.web.lists.getByTitle("Helpdesk").get();
     console.log(list);
-  }
+  };
 
   const addItem = async () => {
-    const result = await sp.web.lists.getByTitle("Helpdesk").items.add({ Title: "Next item" });
+    const result = await sp.web.lists
+      .getByTitle("Helpdesk")
+      .items.add({ Title: "Next item" });
     result.item.get().then(r => console.log(r));
-  }
+  };
 
   if (loadingItems) {
     return <div>Loading ...</div>;
@@ -71,8 +85,12 @@ const App: React.FC<IAppProps> = ({ spHttpClient, currentSiteUrl }) => {
             <Link to="/form">Form</Link>
           </div>
           <Switch>
-            <Route path="/form"><FormPage /></Route>
-            <Route path="/" exact ><HomePage /></Route>
+            <Route path="/form">
+              <FormPage />
+            </Route>
+            <Route path="/" exact>
+              <HomePage />
+            </Route>
           </Switch>
           <p>{currentSiteUrl}</p>
           <ul>
