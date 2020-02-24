@@ -18,7 +18,7 @@ const App: React.FC<IAppProps> = ({ spHttpClient, currentSiteUrl }) => {
 
   React.useEffect(() => {
     setLoadingItems(true);
-    fetchItems()
+    getItems()
       .then(items => setItems(items))
       .then(() => setLoadingItems(false))
       .catch(e => console.error(e));
@@ -33,22 +33,32 @@ const App: React.FC<IAppProps> = ({ spHttpClient, currentSiteUrl }) => {
       .catch(e => console.error(e));
   };
 
-  const fetchItems = async () => {
+  const getItems = async () => {
     const list = sp.web.lists.getByTitle("Helpdesk");
-    const r = await list.items
-      .select("Id", "Title", "Comments", "Status", "AuthorId")
+    const items = await list.items
+      .select("Id", "Title", "Comments", "Status", "Author/Id", "Author/Title")
+      .expand("Author")
       .getAll();
-    return r;
+    return items;
   };
 
-  const fetchItem = async () => {
+  const fetchItems = async () => {
     const list = sp.web.lists.getByTitle("Helpdesk");
-    const r = await list.items
-      .getById(2)
-      .select("Comments", "Status", "Editor/Id", "Versions")
+    const items = await list.items
+      .select("Id", "Title", "Comments", "Status", "Author/Id", "Author/Title", "Editor/Id", "Editor/Title")
+      .expand("Author", "Editor")
+      .getAll();
+    console.log(items);
+  };
+
+  const fetchItem = async (id: number) => {
+    const list = sp.web.lists.getByTitle("Helpdesk");
+    const item = await list.items
+      .getById(id)
+      .select("Comments", "Title", "Status", "EditorId", "Versions")
       .expand("Versions")
       .get();
-    console.log(r);
+    console.log(item);
   };
 
   const fetchUser = async () => {
@@ -100,7 +110,7 @@ const App: React.FC<IAppProps> = ({ spHttpClient, currentSiteUrl }) => {
           </ul>
         </div>
         <button onClick={fetchItems}>fetch items</button>
-        <button onClick={fetchItem}>fetch item</button>
+        <button onClick={() => fetchItem(2)}>fetch item</button>
         <button onClick={fetchUser}>fetch user</button>
         <button onClick={fetchList}>fetch list</button>
         <button onClick={addItem}>add item</button>
