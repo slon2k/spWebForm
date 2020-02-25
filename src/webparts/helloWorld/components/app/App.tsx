@@ -4,6 +4,7 @@ import { IAppProps } from "./IAppProps";
 import styles from "./App.module.scss";
 import HomePage from "./../../pages/HomePage";
 import FormPage from "./../../pages/FormPage";
+import DetailsPage from "./../../pages/DetailsPage";
 import { User, Tickets } from "../../services/api.service";
 
 const App: React.FC<IAppProps> = ({}) => {
@@ -63,18 +64,22 @@ const App: React.FC<IAppProps> = ({}) => {
             <h2>Links:</h2>
             <Link to="/">Home</Link>
             <Link to="/form">Form</Link>
+            <Link to="/ticket/4">Ticket</Link>
           </div>
           <Switch>
-            <Route path="/form">
+            <Route path="/form" exact>
               <FormPage addItem={addItem} />
             </Route>
-            <Route path="/" exact>
+            <Route path="/ticket/:id" exact component={DetailsPage}>
+              
+            </Route>
+            <Route path="/" exact >
               <HomePage />
             </Route>
           </Switch>
           <ul>
             {items.map(item => (
-              <li key={item.Id}>{item.Title}</li>
+              <li key={item.Id}><Link to={`/ticket/${item.Id}`}>{item.Title}</Link></li>
             ))}
           </ul>
         </div>
