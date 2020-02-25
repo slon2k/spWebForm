@@ -24,7 +24,7 @@ const DetailsPage: React.FC<RouteComponentProps<IParams>> = ({ match }) => {
 
   React.useEffect(() => {
     fetchItem();
-  }, []);
+  }, [id]);
 
   if (loading) {
     return <div>Loading ticket ...</div>;
