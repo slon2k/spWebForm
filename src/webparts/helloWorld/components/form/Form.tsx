@@ -5,7 +5,7 @@ const initialForm = {
   Comments: "",
 }
 
-const Form = () => {
+const Form = ({addItem}) => {
   const [form, setForm] = React.useState(initialForm);
 
   const handleChange = (e) => {
@@ -14,6 +14,7 @@ const Form = () => {
 
   const handleSubmit = () => {
     console.log(form);
+    addItem(form);
   }
 
   return (

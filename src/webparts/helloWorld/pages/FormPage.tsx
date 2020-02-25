@@ -1,10 +1,10 @@
 import * as React from 'react';
 import Form from "../components/form/Form";
 
-const FormPage = () => {
+const FormPage = ({addItem}) => {
   return (
     <div>
-      <Form />
+      <Form addItem={addItem}/>
     </div>
   )
 }

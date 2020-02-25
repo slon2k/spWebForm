@@ -31,10 +31,7 @@ export default class HelloWorldWebPart extends BaseClientSideWebPart<
   }
 
   public render(): void {
-    const element: React.ReactElement<IAppProps> = React.createElement(App, {
-      spHttpClient: this.context.spHttpClient,
-      currentSiteUrl: this.context.pageContext.web.absoluteUrl
-    });
+    const element: React.ReactElement<IAppProps> = React.createElement(App, {});
 
     ReactDom.render(element, this.domElement);
   }
