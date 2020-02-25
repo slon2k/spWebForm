@@ -41,7 +41,7 @@ const App: React.FC<IAppProps> = ({}) => {
     console.log(list);
   };
 
-  const addItem = async (form) => {
+  const addItem = async form => {
     Tickets.addItem(form)
       .then(r => console.log(r))
       .then(fetchItems)
@@ -66,7 +66,7 @@ const App: React.FC<IAppProps> = ({}) => {
           </div>
           <Switch>
             <Route path="/form">
-              <FormPage addItem={addItem}/>
+              <FormPage addItem={addItem} />
             </Route>
             <Route path="/" exact>
               <HomePage />
