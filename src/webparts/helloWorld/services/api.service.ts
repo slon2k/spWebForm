@@ -30,7 +30,7 @@ export const Tickets = {
     const list = sp.web.lists.getByTitle(LIST_TITLE);
     return await list.items
       .getById(id)
-      .select("Title", "Comments", "Status", "EditorId", "Versions")
+      .select("Title", "Comments", "Status", "EditorId", "AuthorId", "Versions")
       .expand("Versions")
       .get();
   },

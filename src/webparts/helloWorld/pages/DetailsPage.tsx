@@ -10,7 +10,7 @@ interface IParams {
 const DetailsPage: React.FC<RouteComponentProps<IParams>> = ({ match }) => {
   const { id } = match.params;
   const [loading, setLoading] = React.useState(false);
-  const [ticket, setTicket] = React.useState({});
+  const [ticket, setTicket] = React.useState(null);
 
   const fetchItem = async () => {
     setLoading(true);
