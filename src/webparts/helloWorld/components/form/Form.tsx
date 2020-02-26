@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { Redirect } from 'react-router-dom';
 
 const initialForm = {
   Title: "",
@@ -12,9 +13,9 @@ const Form = ({addItem}) => {
     setForm({...form, [e.target.name]: e.target.value});
   }
 
-  const handleSubmit = () => {
-    console.log(form);
-    addItem(form);
+  const handleSubmit = async () => {
+    await addItem(form);
+    <Redirect to="/" />
   }
 
   return (

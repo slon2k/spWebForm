@@ -64,24 +64,16 @@ const App: React.FC<IAppProps> = ({}) => {
             <h2>Links:</h2>
             <Link to="/">Home</Link>
             <Link to="/form">Form</Link>
-            <Link to="/ticket/4">Ticket</Link>
           </div>
           <Switch>
             <Route path="/form" exact>
               <FormPage addItem={addItem} />
             </Route>
-            <Route path="/ticket/:id" exact component={DetailsPage}>
-              
-            </Route>
-            <Route path="/" exact >
-              <HomePage />
+            <Route path="/ticket/:id" exact component={DetailsPage}></Route>
+            <Route path="/" exact>
+              <HomePage tickets={items} loading={loadingItems}/>
             </Route>
           </Switch>
-          <ul>
-            {items.map(item => (
-              <li key={item.Id}><Link to={`/ticket/${item.Id}`}>{item.Title}</Link></li>
-            ))}
-          </ul>
         </div>
         <button onClick={fetchItems}>fetch items</button>
         <button onClick={() => fetchItem(2)}>fetch item</button>

@@ -28,9 +28,11 @@ const DetailsPage: React.FC<RouteComponentProps<IParams>> = ({ match }) => {
 
   if (loading) {
     return <div>Loading ticket ...</div>;
-  } else {
+  } else if (ticket) {
     return <TicketDetails ticket={ticket}/>;
   }
+
+  return <div>Ticket not found</div>
 
 };
 
